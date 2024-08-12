@@ -5,6 +5,7 @@ enum ToastType {
   SUCCESS,
   ERROR,
   WARNING,
+  INFO,
 }
 
 enum ToastGravity {

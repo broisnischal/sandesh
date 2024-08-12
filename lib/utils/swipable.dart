@@ -7,11 +7,13 @@ class SwipeableWidget extends StatefulWidget {
     this.threshold = 50.0,
     this.onSwipeLeft,
     this.onSwipeRight,
+    this.onSwipeUp,
   });
   final Widget child;
   final double threshold;
   final VoidCallback? onSwipeLeft;
   final VoidCallback? onSwipeRight;
+  final VoidCallback? onSwipeUp;
 
   @override
   _SwipeableWidgetState createState() => _SwipeableWidgetState();
@@ -19,10 +21,17 @@ class SwipeableWidget extends StatefulWidget {
 
 class _SwipeableWidgetState extends State<SwipeableWidget> {
   double _offset = 0;
+  double _verticalOffset = 0;
 
   void _onHorizontalDragUpdate(DragUpdateDetails details) {
     setState(() {
       _offset += details.primaryDelta!;
+    });
+  }
+
+  void _onVerticalDragUpdate(DragUpdateDetails details) {
+    setState(() {
+      _verticalOffset += details.primaryDelta!;
     });
   }
 
@@ -40,8 +49,43 @@ class _SwipeableWidgetState extends State<SwipeableWidget> {
         }
       }
     }
+
     setState(() {
       _offset = 0.0;
+      // _verticalOffset = 0.0;
+    });
+  }
+
+  // void _onVerticalDragEnd(DragEndDetails details) {
+  //   if (_verticalOffset.abs() > widget.threshold) {
+  //     if (_verticalOffset > 0) {
+  //       // Swiped to the right
+  //       if (widget.onSwipeRight != null) {
+  //         widget.onSwipeRight!();
+  //       }
+  //     } else {
+  //       // Swiped to the left
+  //       if (widget.onSwipeLeft != null) {
+  //         widget.onSwipeLeft!();
+  //       }
+  //     }
+  //   }
+
+  //   setState(() {
+  //     // _offset = 0.0;
+  //     _verticalOffset = 0.0;
+  //   });
+  // }
+  void _onVerticalDragEnd(DragEndDetails details) {
+    if (_verticalOffset < 0 && _verticalOffset.abs() > widget.threshold) {
+      // Swiped up
+      if (widget.onSwipeUp != null) {
+        widget.onSwipeUp!();
+      }
+    }
+
+    setState(() {
+      _verticalOffset = 0.0;
     });
   }
 
@@ -50,8 +94,10 @@ class _SwipeableWidgetState extends State<SwipeableWidget> {
     return GestureDetector(
       onHorizontalDragUpdate: _onHorizontalDragUpdate,
       onHorizontalDragEnd: _onHorizontalDragEnd,
+      onVerticalDragUpdate: _onVerticalDragUpdate,
+      onVerticalDragEnd: _onVerticalDragEnd,
       child: Transform.translate(
-        offset: Offset(_offset, 0),
+        offset: Offset(_offset, _verticalOffset),
         child: widget.child,
       ),
     );

@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'toast_widget.dart';
 import 'toast_enum.dart';
 
+// OverlayEntry? _mainToast;
+// final isToastActive = _mainToast != null;
+
 class ToastManager {
   static OverlayEntry? _mainToast;
 
@@ -11,8 +14,7 @@ class ToastManager {
     BuildContext context, {
     required String message,
     String title = '',
-    void Function()? onTap,
-    removeonTap = false,
+    void Function(OverlayEntry)? onTap,
     Duration duration = const Duration(seconds: 5),
     ToastType type = ToastType.DEFAULT,
     ToastGravity gravity = ToastGravity.topcenter,
@@ -26,7 +28,7 @@ class ToastManager {
       builder: (context) => ToastWidget(
         overlayEntry: overlayEntry,
         message: message,
-        onTap: onTap ?? (removeonTap ? _clearToast : () {}),
+        onTap: onTap != null ? () => onTap(overlayEntry) : _clearToast,
         title: title,
         type: type,
         gravity: gravity,
@@ -36,9 +38,17 @@ class ToastManager {
     overlay.insert(overlayEntry);
     _mainToast = overlayEntry;
 
+    // if (onTap == null) {
+    //   Future.delayed(duration, () {
+    //     _clearToast();
+    //   });
+    // }
     if (onTap == null) {
       Future.delayed(duration, () {
-        _clearToast();
+        if (overlayEntry.mounted) {
+          overlayEntry.remove();
+          _mainToast = null;
+        }
       });
     }
   }

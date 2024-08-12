@@ -1,6 +1,9 @@
 // lib/src/toast_widget.dart
 
 import 'package:flutter/material.dart';
+import 'package:sandesh/utils/shake_animation.dart';
+import 'package:sandesh/utils/swipable.dart';
+import 'package:sandesh/utils/tap_animation.dart';
 import 'toast_enum.dart';
 
 class ToastWidget extends StatefulWidget {
@@ -54,41 +57,139 @@ class _ToastWidgetState extends State<ToastWidget>
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      // top: MediaQuery.of(context).size.height * 0.06,
-      // left: MediaQuery.of(context).size.width * 0.05,
-      // right: MediaQuery.of(context).size.width * 0.05,
-      top: widget.gravity == ToastGravity.top ||
-              widget.gravity == ToastGravity.topleft ||
-              widget.gravity == ToastGravity.topright
-          ? MediaQuery.of(context).size.height * 0.06
-          : null,
-      bottom: widget.gravity == ToastGravity.bottom ||
-              widget.gravity == ToastGravity.bottomleft ||
-              widget.gravity == ToastGravity.bottomright
-          ? MediaQuery.of(context).size.height * 0.06
-          : null,
-      left: widget.gravity == ToastGravity.topleft ||
-              widget.gravity == ToastGravity.bottomleft
-          ? MediaQuery.of(context).size.width * 0.05
-          : null,
-      right: widget.gravity == ToastGravity.topright ||
-              widget.gravity == ToastGravity.bottomright
-          ? MediaQuery.of(context).size.width * 0.05
-          : null,
+      top: MediaQuery.of(context).size.height * 0.06,
+      left: MediaQuery.of(context).size.width * 0.05,
+      right: MediaQuery.of(context).size.width * 0.05,
+      // child: Center(
+      //   child: FadeTransition(
+      //     opacity: _opacityAnimation,
+      //     child: GestureDetector(
+      //       onTap: () {
+      //         widget.onTap();
+      //         _controller.reverse().then((_) => widget.overlayEntry.remove());
+      //       },
+      //       child: Material(
+      //         color: Colors.transparent,
+      //         child: buildToastContent(
+      //           widget.message,
+      //           widget.title,
+      //           widget.type,
+      //         ),
+      //       ),
+      //     ),
+      //   ),
+      // ),
       child: Center(
         child: FadeTransition(
           opacity: _opacityAnimation,
-          child: GestureDetector(
+          child: TapAnimationWidget(
             onTap: () {
               widget.onTap();
               _controller.reverse().then((_) => widget.overlayEntry.remove());
+              // _controller.reverse(); // Reverse animation on tap
             },
-            child: Material(
-              color: Colors.transparent,
-              child: buildToastContent(
-                widget.message,
-                widget.title,
-                widget.type,
+            child: GestureDetector(
+              onHorizontalDragEnd: (details) {
+                // if (details.primaryVelocity! < 0) {
+                //   log('left');
+                //   // _offsetAnimation =
+                //   //     Tween<Offset>(begin: Offset(-1, 0), end: Offset(0, 0))
+                //   //         .animate(_controller);
+                //   // _controller.forward().then((_) {
+
+                //   _offsetAnimation = Tween<Offset>(
+                //     begin: const Offset(0, 1),
+                //     end: const Offset(-1, 0),
+                //   ).animate(_controller);
+                //   // _controller.reset();
+                //   _controller.reverse().then((_) {
+                //     widget.overlayEntry.remove();
+                //     mainToast = null;
+                //   });
+                // } else if (details.primaryVelocity! > 0) {
+                //   log('right');
+
+                //   _offsetAnimation = Tween<Offset>(
+                //     begin: const Offset(1, 0),
+                //     end: const Offset(1, 0),
+                //   ).animate(_controller);
+                //   // _controller.reset();
+                //   _controller.forward().then((_) {
+                //     widget.overlayEntry.remove();
+                //     mainToast = null;
+                //   });
+                // }
+                // if (details.primaryVelocity! < 0) {
+                //   _offsetAnimation = Tween<Offset>(
+                //           begin: const Offset(-1, 0), end: const Offset(0, 0))
+                //       .animate(_controller);
+                //   _controller.forward().then((_) {
+                //     widget.overlayEntry.remove();
+                //     _currentToast = null;
+                //   });
+                // } else if (details.primaryVelocity! > 0) {
+                //   _offsetAnimation = Tween<Offset>(
+                //           begin: const Offset(1, 0), end: const Offset(0, 0))
+                //       .animate(_controller);
+                //   _controller.forward().then((_) {
+                //     widget.overlayEntry.remove();
+                //     _currentToast = null;
+                //   });
+                // }
+              },
+              onVerticalDragEnd: (_) {
+                print('Vertical drag detected');
+                widget.overlayEntry.remove();
+                // _controller.reverse().then((_) {
+                //   widget.overlayEntry.remove();
+                //   _currentToast = null;
+                // });
+              },
+              onTap: () {
+                print('Tap detected');
+                // print('timer is ${widget.timer.tick}');
+                widget.onTap();
+                // widget.timer.cancel();
+                // _controller.reverse().then((_) {
+                //   widget.overlayEntry.remove();
+                //   _currentToast = null;
+                // });
+              },
+              child: Material(
+                color: Colors.transparent,
+                type: MaterialType.transparency,
+                // shape: RoundedRectangleBorder(
+                // borderRadius: BorderRadius.circular(12.r),
+                // ),
+                elevation: 100,
+                // clipBehavior: Clip.hardEdge,
+                child: SwipeableWidget(
+                  child: _buildToastContent(
+                    widget.message,
+                    widget.type,
+                  ),
+                  onSwipeLeft: () {
+                    print('left');
+                    widget.overlayEntry.remove();
+                  },
+                  onSwipeRight: () {
+                    print('right');
+                    widget.overlayEntry.remove();
+                    // overlayEntry = null;
+                  },
+                  onSwipeUp: () {
+                    print('up');
+                    widget.overlayEntry.remove();
+                  },
+                  // threshold: 4,
+                ),
+                // child: FadeTransition(
+                //   opacity: _opacityAnimation,
+                //   child: SlideTransition(
+                //     position: _offsetAnimation,
+                //     child: _buildToastContent(widget.message, widget.type),
+                //   ),
+                // ),
               ),
             ),
           ),
@@ -97,52 +198,137 @@ class _ToastWidgetState extends State<ToastWidget>
     );
   }
 
-  Widget buildToastContent(
+  Widget _buildToastContent(String message, ToastType type) {
+    Color backgroundColor;
+    IconData iconvalue;
+    switch (type) {
+      case ToastType.SUCCESS:
+        backgroundColor = Colors.green.shade400.withOpacity(.8);
+        iconvalue = Icons.check_circle; // checkcircle
+
+        break;
+      case ToastType.ERROR:
+        iconvalue = Icons.error_outline;
+        backgroundColor = Colors.red.withOpacity(.8);
+        break;
+      case ToastType.WARNING:
+        backgroundColor = Colors.orange.withAlpha(1000);
+        iconvalue = Icons.warning_amber_rounded;
+
+        break;
+      case ToastType.INFO:
+        backgroundColor = Colors.blue.withAlpha(1000);
+        iconvalue = Icons.info_outline;
+
+        break;
+      case ToastType.DEFAULT:
+        backgroundColor = Colors.grey.shade900.withOpacity(.95);
+        iconvalue = Icons.notifications_on_outlined;
+
+        break;
+    }
+
+    return type == ToastType.ERROR
+        ? ShakeAnimationWidget(
+            duration: const Duration(milliseconds: 50),
+            child: buildToastWidget(
+              context,
+              message,
+              widget.title,
+              type,
+              iconvalue,
+              backgroundColor,
+            ),
+          )
+        : buildToastWidget(
+            context,
+            message,
+            widget.title,
+            type,
+            iconvalue,
+            backgroundColor,
+          );
+  }
+
+  Widget buildToastWidget(
+    BuildContext context,
     String message,
     String title,
     ToastType type,
+    IconData iconvalue,
+    Color backgroundColor,
   ) {
-    // Implement your buildToastContent logic here, like showing icons, colors, etc.
     return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: _getToastColor(type),
-        borderRadius: BorderRadius.circular(8),
+      // alignment: Alignment.center,
+      margin: const EdgeInsets.only(
+        right: 8,
       ),
-      child: Column(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: backgroundColor,
+        ),
+      ),
+      child: Row(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (title.isNotEmpty)
-            Text(
-              title,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
+          Container(
+            padding: const EdgeInsets.all(4),
+            decoration: BoxDecoration(
+              color: backgroundColor,
+              borderRadius: BorderRadius.circular(8),
             ),
-          const SizedBox(height: 4),
-          Text(
-            message,
-            style: const TextStyle(
+            child: Icon(
+              iconvalue,
               color: Colors.white,
+              size: 20,
+            ),
+          ),
+          // 5.horizontalSpace,
+          const SizedBox(width: 5),
+          Flexible(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (title.isNotEmpty) ...[
+                  Text(
+                    title,
+                    softWrap: true,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600),
+                  ),
+                  // 3.verticalSpace,
+                  const SizedBox(height: 3),
+                ],
+                Text(
+                  message,
+                  softWrap: true,
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                  // style: TextStyleClass.normalTextStyle(
+                  //   color: Colors.white,
+                  //   size: title.isNotEmpty ? 12.sp : 13.sp,
+                  //   width: FontWeight.w400,
+                  // ),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ],
             ),
           ),
         ],
       ),
     );
-  }
-
-  Color _getToastColor(ToastType type) {
-    switch (type) {
-      case ToastType.SUCCESS:
-        return Colors.green;
-      case ToastType.ERROR:
-        return Colors.red;
-      case ToastType.WARNING:
-        return Colors.orange;
-      default:
-        return Colors.black87;
-    }
   }
 }
