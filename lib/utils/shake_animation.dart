@@ -5,9 +5,9 @@ class ShakeAnimationWidget extends StatefulWidget {
     super.key,
     required this.child,
     this.duration = const Duration(milliseconds: 500),
-    this.shakeSpeed = 5.0,
+    this.shakeSpeed = 6.0,
     this.shakeThreshold = 10.0,
-    this.shakeCount = 3, // Number of shakes
+    this.shakeCount = 4, // Number of shakes
   });
 
   final Widget child;

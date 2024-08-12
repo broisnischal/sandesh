@@ -1,6 +1,7 @@
 // lib/src/toast_manager.dart
 
 import 'package:flutter/material.dart';
+import 'package:sandesh/utils/vibration.dart';
 import 'toast_widget.dart';
 import 'toast_enum.dart';
 
@@ -17,7 +18,18 @@ class ToastManager {
     void Function(OverlayEntry)? onTap,
     Duration duration = const Duration(seconds: 5),
     ToastType type = ToastType.DEFAULT,
-    ToastGravity gravity = ToastGravity.topcenter,
+    bool vibrate = true,
+    TextStyle? titleStyle = const TextStyle(
+      color: Colors.white,
+      fontSize: 14,
+      fontWeight: FontWeight.w600,
+    ),
+    TextStyle? messageStyle = const TextStyle(
+      color: Colors.white,
+      fontSize: 14,
+      fontWeight: FontWeight.w400,
+    ),
+    // ToastGravity gravity = ToastGravity.topcenter,
   }) {
     _clearToast();
 
@@ -31,18 +43,23 @@ class ToastManager {
         onTap: onTap != null ? () => onTap(overlayEntry) : _clearToast,
         title: title,
         type: type,
-        gravity: gravity,
+        // Implement in future version
+        gravity: ToastGravity.topcenter,
+        titleStyle: titleStyle,
+        messageStyle: messageStyle,
+        //   messageStyle: const TextStyle(
+        //       color: Colors.white, fontSize: 14, fontWeight: FontWeight.w400),
       ),
+    );
+
+    ToastVibrator.provideHapticFeedback(
+      type: type,
+      vibrate: vibrate,
     );
 
     overlay.insert(overlayEntry);
     _mainToast = overlayEntry;
 
-    // if (onTap == null) {
-    //   Future.delayed(duration, () {
-    //     _clearToast();
-    //   });
-    // }
     if (onTap == null) {
       Future.delayed(duration, () {
         if (overlayEntry.mounted) {
@@ -54,7 +71,6 @@ class ToastManager {
   }
 
   static void _clearToast() {
-    // Null check and safe removal of the current toast
     if (_mainToast != null && _mainToast!.mounted) {
       _mainToast?.remove();
       _mainToast = null;

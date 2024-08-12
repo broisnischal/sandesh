@@ -3,14 +3,18 @@ import 'package:sandesh/src/toast_enum.dart';
 
 class ToastVibrator {
   static void provideHapticFeedback(
-      ToastType type,
+      {ToastType type = ToastType.DEFAULT,
       Function()? successCustomVibration,
       Function()? errorVibration,
-      bool? vibrate) {
+      bool? vibrate}) {
     if (vibrate != null && !vibrate) return;
     switch (type) {
       case ToastType.SUCCESS:
-        vibrate ?? HapticFeedback.selectionClick();
+        if (successCustomVibration == null) {
+          HapticFeedback.selectionClick();
+        } else {
+          successCustomVibration();
+        }
         break;
       case ToastType.ERROR:
         errorVibration ?? HapticFeedback.heavyImpact();
