@@ -26,7 +26,7 @@ child: const Text("Error Toast")
 );
 ```
 
-![](/images/README_2024-08-13-05-46-10.png)
+![](./README_2024-08-13-05-46-10.png)
 
 ## Configuration
 

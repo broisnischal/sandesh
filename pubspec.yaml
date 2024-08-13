@@ -1,7 +1,7 @@
 name: sandesh
 description: "A new Flutter package project."
 version: 0.0.1
-homepage:
+homepage: https://pub.dev/packages/sandesh
 
 environment:
   sdk: '>=3.4.3 <4.0.0'
