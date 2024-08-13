@@ -1,39 +1,64 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# Sandesh - Flutter Toast
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages).
+## Installation
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages).
--->
-
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
-
-## Features
-
-TODO: List what your package can do. Maybe include images, gifs, or videos.
-
-## Getting started
-
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+```bash
+flutter pub add sandesh
+```
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
-
 ```dart
-const like = 'sample';
+import 'package:sandesh/sandesh.dart';
+
+
+ ElevatedButton(
+    onPressed: () {
+        ToastManager.showToast(
+        context,
+        message: "Please Enter Correct Password",
+        type: ToastType.ERROR,
+        title: "Invalid Password",
+        // removeonTap: true
+        );
+        // Sandesh.showToast(context, "testing");
+    },
+child: const Text("Error Toast")
+);
 ```
 
-## Additional information
+## Configuration
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+Sandesh Toast is a simple to use plugin that provides a way to display toast messages in your Flutter app.
+
+### Toast Types
+
+Sandesh Toast supports four types of toast messages: default, success, error, and warning.
+
+### Customization
+
+You can customize the look and feel of the toast messages by passing in custom title and message styles.
+
+### Toast Gravity
+
+Sandesh Toast supports 8 different gravity options for the toast messages.
+
+### Handling Tap Events
+
+You can handle tap events on the toast messages by passing in a callback function.
+
+### Vibration on Tap
+
+Sandesh Toast supports vibration on tap for the toast messages.
+
+### Future Work
+
+There are several future improvements that can be made to Sandesh Toast including the addition of a countdown timer and the ability to customize the toast background color.
+
+## Contributing
+
+If you would like to contribute to the development of Sandesh Toast, please fork the repository and submit a pull request.
+
+## License
+
+Sandesh Toast is released under the MIT license. See the LICENSE file for details.
