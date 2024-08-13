@@ -1,0 +1,16 @@
+# Ignore image files
+
+_.png
+_.jpg
+_.jpeg
+_.gif
+
+# Ignore video files
+
+_.mp4
+_.avi
+
+# Ignore specific directories
+
+media/
+assets/
