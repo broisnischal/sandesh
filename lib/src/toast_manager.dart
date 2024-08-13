@@ -8,7 +8,7 @@ import 'toast_enum.dart';
 // OverlayEntry? _mainToast;
 // final isToastActive = _mainToast != null;
 
-class ToastManager {
+class Sandesh {
   static OverlayEntry? _mainToast;
 
   static void showToast(

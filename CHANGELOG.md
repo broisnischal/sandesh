@@ -1,3 +1,7 @@
+## 0.0.3
+
+- Wrong name change of main toast
+
 ## 0.0.1
 
 - Added swipe to dismiss toast

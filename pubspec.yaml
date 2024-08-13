@@ -1,6 +1,6 @@
 name: sandesh
 description: "Sandesh - flutter toast library"
-version: 0.0.1
+version: 0.0.3
 homepage: https://github.com/broisnischal/sandesh
 
 environment:

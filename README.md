@@ -14,7 +14,7 @@ import 'package:sandesh/sandesh.dart';
 
  ElevatedButton(
     onPressed: () {
-        ToastManager.showToast(
+        Sandesh.showToast(
         context,
         message: "Please Enter Correct Password",
         type: ToastType.ERROR,
@@ -26,7 +26,7 @@ child: const Text("Error Toast")
 );
 ```
 
-![](./README_2024-08-13-05-46-10.png)
+![](./demo.gif)
 
 ## Configuration
 
