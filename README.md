@@ -26,7 +26,7 @@ child: const Text("Error Toast")
 );
 ```
 
-![](./demo.gif)
+![](https://github.com/broisnischal/neesblogs/blob/main/Screen%20Recording%20Aug%2013.gif?raw=true)
 
 ## Configuration
 
