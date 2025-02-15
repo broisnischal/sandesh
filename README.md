@@ -59,6 +59,7 @@ Sandesh Toast supports vibration on tap for the toast messages.
 - [ ] local navigate
 - [ ] customize toast
 - [ ] optimize performance
+- [ ] custom vibration
 
 ## Contributing
 
