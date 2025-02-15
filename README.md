@@ -54,12 +54,13 @@ Sandesh Toast supports vibration on tap for the toast messages.
 
 ### Progress
 
-- [ ] support for desktop, and web!
+- [ ] support for desktop, and web!( ie, sonner )
 - [ ] support vertical swipe up
 - [ ] local navigate
 - [ ] customize toast
 - [ ] optimize performance
 - [ ] custom vibration
+- [ ] custom animation support
 
 ## Contributing
 
