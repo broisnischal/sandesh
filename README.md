@@ -52,9 +52,13 @@ You can handle tap events on the toast messages by passing in a callback functio
 
 Sandesh Toast supports vibration on tap for the toast messages.
 
-### Future Work
+### Progress
 
-There are several future improvements that can be made to Sandesh Toast including the addition of a countdown timer and the ability to customize the toast background color.
+- [ ] support for desktop, and web!
+- [ ] support vertical swipe up
+- [ ] local navigate
+- [ ] customize toast
+- [ ] optimize performance
 
 ## Contributing
 
